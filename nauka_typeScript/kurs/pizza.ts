@@ -23,15 +23,17 @@ let cashInRegister:number  = 1000
 const orderingQueue: Order[] = [];
 let nextOrderId = 1
 
-function addNewPizza(pizzaObj: Pizza): void {
+function addNewPizza(pizza: Omit<Pizza, 'id'>): Pizza {
+    const pizzaObj:Pizza = {id: pizzaId++, ...pizza}
     menu.push(pizzaObj);
+    return pizzaObj
 }
 
 function placeOrder(pizzaName: string): Order | null{
     const pizza = menu.find(p => p.name === pizzaName);
     if(pizza){
         cashInRegister += pizza.price;
-        let orderObj: Order = {id: nextOrderId++  ,pizza: pizza.name, status:'ordered'};
+        let orderObj: Order = {id: nextOrderId++, pizza: pizza.name, status:'ordered'};
         orderingQueue.push(orderObj);
         return orderObj;
     } else {
@@ -61,9 +63,9 @@ export function getPizzaDetail(identifier: string | number): string | Pizza{
         return `Invalid type`
     }
 }
-addNewPizza({ id: pizzaId++, name: 'bbq chicken', price: 12.99 });
-addNewPizza({ id: pizzaId++, name: 'four cheese', price: 10.49 });
-addNewPizza({ id: pizzaId++, name: 'meat lovers', price: 13.99 });
+addNewPizza( { name: 'bbq chicken', price: 12.99 });
+addNewPizza( { name: 'four cheese', price: 10.49 });
+addNewPizza( { name: 'meat lovers', price: 13.99 });
 
 placeOrder('bbq chicken');
 completeOrder(1);
